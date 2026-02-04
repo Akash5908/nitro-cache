@@ -1,0 +1,29 @@
+{
+  "name": "nitro-cache",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "pnpm tsc -b && node --env-file=.env ./dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@faker-js/faker": "^10.2.0",
+    "@types/express": "^5.0.6",
+    "express": "^5.2.1",
+    "ioredis": "^5.9.2",
+    "redis": "^5.10.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@prisma/client": "6.19.0",
+    "@types/node": "^25.2.0",
+    "@types/redis": "^4.0.11",
+    "prisma": "6.19.0",
+    "tsx": "^4.21.0"
+  }
+}
