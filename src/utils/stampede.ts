@@ -9,10 +9,19 @@ export const PromiseMemorization = async (id: string) => {
     return cache.get(id);
   }
 
-  const data = await prisma.product.findUnique({
-    where: { id: Number(id) },
-  });
+  const promise = await prisma.product
+    .findUnique({
+      where: { id: Number(id) },
+    })
+    .then((data) => {
+      cache.delete(id);
+      return data;
+    })
+    .catch((error) => {
+      cache.delete(id);
+      return error;
+    });
 
-  cache.set(id, data);
-  return data;
+  cache.set(id, promise);
+  return promise;
 };
