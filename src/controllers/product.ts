@@ -2,6 +2,7 @@ import express from "express";
 import { PrismaClient } from "@prisma/client"; // ✅ Fixed import
 import { Cache } from "../middlewares/cache.js";
 import { redisClient } from "../config/redis.js";
+import { PromiseMemorization } from "../utils/stampede.js";
 
 const router: express.Router = express.Router();
 const prisma = new PrismaClient();
@@ -18,7 +19,7 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
   // Check the cache first
   const cache = await cacheCheck(id);
-  console.log(cache);
+
   if (cache?.success === true) {
     return res.json({
       success: true,
@@ -26,9 +27,7 @@ router.get("/:id", async (req, res) => {
     });
   }
   try {
-    const product = await prisma.product.findUnique({
-      where: { id: Number(id) },
-    });
+    const product = await PromiseMemorization(id);
 
     if (!product) {
       return res.status(404).json({
