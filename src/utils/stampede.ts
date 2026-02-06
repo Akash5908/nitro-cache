@@ -5,23 +5,25 @@ const cache = new Map();
 const prisma = new PrismaClient();
 
 export const PromiseMemorization = async (id: string) => {
-  if (cache.has(id)) {
-    return cache.get(id);
-  }
+  try {
+    if (cache.has(id)) {
+      return cache.get(id);
+    }
 
-  const promise = await prisma.product
-    .findUnique({
+    const promise = prisma.product.findUnique({
       where: { id: Number(id) },
-    })
-    .then((data) => {
-      cache.delete(id);
-      return data;
-    })
-    .catch((error) => {
-      cache.delete(id);
-      return error;
     });
 
-  cache.set(id, promise);
-  return promise;
+    // Store the promise immediately
+    cache.set(id, promise);
+
+    // Clean up cache after promise resolves/rejects
+    promise.finally(() => {
+      cache.delete(id);
+    });
+
+    return promise;
+  } catch (error) {
+    console.log("Promise memorization failed", error);
+  }
 };

@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client"; // ✅ Fixed import
 import { Cache } from "../middlewares/cache.js";
 import { redisClient } from "../config/redis.js";
 import { PromiseMemorization } from "../utils/stampede.js";
+import { ProductValidator } from "../../validators/product.validator.js";
 
 const router: express.Router = express.Router();
 const prisma = new PrismaClient();
@@ -57,16 +58,28 @@ router.get("/:id", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, price, description } = req.body;
+
+  // Should validate:
+  if (!id || isNaN(Number(id))) {
+    return res.status(400).json({ error: "Invalid product ID" });
+  }
+
+  const { success, data } = ProductValidator.safeParse(req.body);
+  if (!success) {
+    return res.status(403).json({
+      success: false,
+      error: "Invalid Schema",
+    });
+  }
   try {
     const update = await prisma.product.update({
       where: {
         id: Number(id),
       },
       data: {
-        name: name,
-        price: price,
-        description: description,
+        name: data.name,
+        price: data.price,
+        description: data.description,
       },
     });
     if (!update) {
@@ -87,7 +100,7 @@ router.patch("/:id", async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Server error.",
+      error: "Server error.",
     });
   }
 });
