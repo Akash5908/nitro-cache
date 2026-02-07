@@ -1,18 +1,16 @@
-import { PrismaClient } from "@prisma/client";
+import { handleDBInteraction } from "../services/product.js";
 
 const cache = new Map();
 
-const prisma = new PrismaClient();
+const { fetchPromise } = handleDBInteraction();
 
-export const PromiseMemorization = async (id: string) => {
+export const PromiseMemorization = (id: string) => {
   try {
     if (cache.has(id)) {
       return cache.get(id);
     }
 
-    const promise = prisma.product.findUnique({
-      where: { id: Number(id) },
-    });
+    const promise = fetchPromise(id);
 
     // Store the promise immediately
     cache.set(id, promise);

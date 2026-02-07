@@ -1,13 +1,15 @@
 import express from "express";
-import { PrismaClient } from "@prisma/client"; // ✅ Fixed import
+import { PrismaClient } from "@prisma/client";
 import { Cache } from "../middlewares/cache.js";
 import { redisClient } from "../config/redis.js";
 import { PromiseMemorization } from "../utils/stampede.js";
-import { ProductValidator } from "../../validators/product.validator.js";
+import { ProductValidator } from "../validators/product.validator.js";
+import { handleDBInteraction } from "../services/product.js";
 
 const router: express.Router = express.Router();
 const prisma = new PrismaClient();
 const { cacheCheck } = Cache();
+const { updateProduct } = handleDBInteraction();
 
 interface Product {
   id: number;
@@ -28,7 +30,8 @@ router.get("/:id", async (req, res) => {
     });
   }
   try {
-    const product = await PromiseMemorization(id);
+    const productPromise = await PromiseMemorization(id);
+    const product = await productPromise;
 
     if (!product) {
       return res.status(404).json({
@@ -38,7 +41,7 @@ router.get("/:id", async (req, res) => {
     }
 
     // Add the product in cache
-    redisClient.SET(`Product:${id}`, JSON.stringify(product));
+    redisClient.SETEX(`Product:${id}`, 300, JSON.stringify(product));
 
     // Delay of 2 sec
     await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -71,23 +74,14 @@ router.patch("/:id", async (req, res) => {
       error: "Invalid Schema",
     });
   }
+  const item = {
+    id: id,
+    name: data.name,
+    price: data.price,
+    description: data.description,
+  };
   try {
-    const update = await prisma.product.update({
-      where: {
-        id: Number(id),
-      },
-      data: {
-        name: data.name,
-        price: data.price,
-        description: data.description,
-      },
-    });
-    if (!update) {
-      return res.status(404).json({
-        success: false,
-        error: "Product not found.",
-      });
-    }
+    const update = await updateProduct(item);
 
     // Update the cache
     redisClient.SET(`Product:${id}`, JSON.stringify(update));
