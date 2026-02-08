@@ -17,7 +17,8 @@ const redisClient = createClient({
   disableOfflineQueue: true,
 });
 
-redisClient.on("connect", () => console.log("✅ Connected to Redis"));
+redisClient.on("ready", () => console.log("✅ Connected to Redis"));
 redisClient.on("error", (err) => console.error("❌ Redis error:", err));
+redisClient.on("reconnecting", () => console.error("🔄 Reconnecting..."));
 
 export { redisClient };

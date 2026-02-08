@@ -1,19 +1,24 @@
-// import { redisClient } from "./src/config/redis.ts";
 import app from "./app.js";
 import { redisClient } from "./src/config/redis.js";
 
 const PORT = process.env.PORT || 5001;
 
-const Server = async () => {
-  // Redis connection
+const startServer = async () => {
   try {
-    await redisClient.connect(); // ← FAILS HERE, but no error visible
+    console.log("🔄 Connecting Redis...");
+    await redisClient.connect();
+    console.log("✅ Redis connected!");
+
+    await app.listen(PORT, () => {
+      console.log(`🚀 Starting server on port ${PORT}...`);
+    });
+
+    console.log("🎉 Nitro-cache ready!");
   } catch (error) {
-    console.error("❌ Redis FAILED:", error); // ← ADD THIS
+    console.error("❌ Startup FAILED:", error);
+    process.exit(1); // Exit on failure
   }
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
 };
 
-Server();
+// ✅ Await the server start
+startServer().catch(console.error);
