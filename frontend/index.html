@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NitroCache - High Performance API Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <h1>NitroCache</h1>
+            </div>
+            <p class="subtitle">High-Performance Caching Dashboard</p>
+        </header>
+
+        <!-- Stats Cards -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🚀</div>
+                <div class="stat-value" id="avgResponseTime">0ms</div>
+                <div class="stat-label">Avg Response Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💾</div>
+                <div class="stat-value" id="cacheHitRate">0%</div>
+                <div class="stat-label">Cache Hit Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-value" id="totalRequests">0</div>
+                <div class="stat-label">Total Requests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-value" id="performanceBoost">0x</div>
+                <div class="stat-label">Performance Boost</div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Left Panel: API Tester -->
+            <section class="panel api-tester">
+                <h2>🎯 API Tester</h2>
+                
+                <!-- GET Product -->
+                <div class="api-section">
+                    <h3>GET Product</h3>
+                    <div class="input-group">
+                        <label>Product ID</label>
+                        <input type="number" id="getProductId" placeholder="Enter product ID (1-10000)" min="1" max="10000">
+                        <button onclick="getProduct()" class="btn btn-primary">
+                            <span class="btn-icon">🔍</span>
+                            Fetch Product
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PATCH Product -->
+                <div class="api-section">
+                    <h3>Update Product</h3>
+                    <div class="input-group">
+                        <label>Product ID</label>
+                        <input type="number" id="patchProductId" placeholder="Enter product ID" min="1" max="10000">
+                    </div>
+                    <div class="input-group">
+                        <label>Name</label>
+                        <input type="text" id="productName" placeholder="Product name">
+                    </div>
+                    <div class="input-group">
+                        <label>Price</label>
+                        <input type="text" id="productPrice" placeholder="99.99">
+                    </div>
+                    <div class="input-group">
+                        <label>Description</label>
+                        <textarea id="productDescription" rows="3" placeholder="Product description..."></textarea>
+                    </div>
+                    <button onclick="updateProduct()" class="btn btn-secondary">
+                        <span class="btn-icon">✏️</span>
+                        Update Product
+                    </button>
+                </div>
+
+                <!-- Load Test -->
+                <div class="api-section">
+                    <h3>Load Test</h3>
+                    <div class="input-group">
+                        <label>Number of Requests</label>
+                        <input type="number" id="loadTestCount" value="10" min="1" max="100">
+                    </div>
+                    <div class="input-group">
+                        <label>Product ID</label>
+                        <input type="number" id="loadTestId" value="1" min="1" max="10000">
+                    </div>
+                    <button onclick="runLoadTest()" class="btn btn-accent">
+                        <span class="btn-icon">🏃</span>
+                        Run Load Test
+                    </button>
+                    <div id="loadTestProgress" class="progress-bar hidden">
+                        <div class="progress-fill" id="progressFill"></div>
+                        <span class="progress-text" id="progressText">0/10</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Results & Logs -->
+            <section class="panel results-panel">
+                <h2>📈 Results</h2>
+                
+                <!-- Current Response -->
+                <div class="result-section">
+                    <h3>Latest Response</h3>
+                    <div id="currentResponse" class="response-box">
+                        <p class="placeholder">Make a request to see results...</p>
+                    </div>
+                </div>
+
+                <!-- Performance Metrics -->
+                <div class="result-section">
+                    <h3>Performance Breakdown</h3>
+                    <div class="metrics-grid">
+                        <div class="metric">
+                            <span class="metric-label">Response Time:</span>
+                            <span class="metric-value" id="responseTime">-</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Cache Status:</span>
+                            <span class="metric-value" id="cacheStatus">-</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Status Code:</span>
+                            <span class="metric-value" id="statusCode">-</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Data Source:</span>
+                            <span class="metric-value" id="dataSource">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request Log -->
+                <div class="result-section">
+                    <h3>Request History</h3>
+                    <div id="requestLog" class="log-container">
+                        <p class="placeholder">No requests yet...</p>
+                    </div>
+                    <button onclick="clearLogs()" class="btn btn-small">Clear Logs</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with ❤️ using TypeScript, Express, Redis & Prisma</p>
+            <div class="tech-stack">
+                <span class="tech-badge">Node.js</span>
+                <span class="tech-badge">TypeScript</span>
+                <span class="tech-badge">Express</span>
+                <span class="tech-badge">Redis</span>
+                <span class="tech-badge">Prisma</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
