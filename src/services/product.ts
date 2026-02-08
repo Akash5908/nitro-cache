@@ -27,7 +27,7 @@ export const handleDBInteraction = () => {
       }
 
       //Update the product if exists
-      await prisma.product.update({
+      const product = await prisma.product.update({
         where: {
           id: Number(data.id),
         },
@@ -37,6 +37,7 @@ export const handleDBInteraction = () => {
           description: data.description,
         },
       });
+      return product;
     } catch (error: any) {
       if (error.code === "P2025") {
         // Prisma "not found" error

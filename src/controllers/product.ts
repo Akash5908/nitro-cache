@@ -5,6 +5,7 @@ import { redisClient } from "../config/redis.js";
 import { PromiseMemorization } from "../utils/stampede.js";
 import { ProductValidator } from "../validators/product.validator.js";
 import { handleDBInteraction } from "../services/product.js";
+import { CLIENT_RENEG_LIMIT } from "node:tls";
 
 const router: express.Router = express.Router();
 const prisma = new PrismaClient();
@@ -84,7 +85,7 @@ router.patch("/:id", async (req, res) => {
     const update = await updateProduct(item);
 
     // Update the cache
-    redisClient.SET(`Product:${id}`, JSON.stringify(update));
+    redisClient.SETEX(`Product:${id}`, 300, JSON.stringify(update));
 
     await new Promise((resolve) => setTimeout(resolve, 2000));
     return res.status(200).json({
