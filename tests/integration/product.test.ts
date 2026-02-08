@@ -1,9 +1,11 @@
 import request from "supertest";
 
+const backendUrl = `http://localhost:${process.env.PORT}`;
+
 describe("Product API", () => {
   //   ✅ GET test (perfect)
   it("GET /api/products/1 returns product", async () => {
-    const response = await request("http://localhost:5001")
+    const response = await request(backendUrl)
       .get("/api/products/1")
       .expect(200)
       .expect("Content-Type", /json/);
@@ -14,7 +16,7 @@ describe("Product API", () => {
 
   // ✅ Fixed POST/PATCH test
   it("updates product", async () => {
-    const response = await request("http://localhost:5001")
+    const response = await request(backendUrl)
       .patch("/api/products/1")
       .send({
         name: "Updated Product",
