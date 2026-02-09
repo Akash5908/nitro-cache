@@ -15,8 +15,7 @@ const app = express();
 
 const allowedOrigins = [
   // "http://localhost:5173",
-  "https://workflow-builder-k0hc.onrender.com",
-  "https://workflow-builder-frontend-hazel.vercel.app",
+  "https://nitro-cache.onrender.com",
 ];
 
 app.use(
