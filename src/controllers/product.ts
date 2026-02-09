@@ -28,6 +28,7 @@ router.get("/:id", async (req, res) => {
     return res.json({
       success: true,
       product: cache.data,
+      from: "cache",
     });
   }
   try {
