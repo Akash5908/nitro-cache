@@ -34,9 +34,9 @@ async function getProduct() {
         const endTime = performance.now();
         const responseTime = Math.round(endTime - startTime);
         
-        // Determine if it was a cache hit based on response time
-        // Cache hits are typically < 50ms, cache misses are > 1000ms (due to artificial delay)
-        const isCacheHit = responseTime < 100;
+        // Determine if it was a cache hit based on backend response
+        // Backend returns "from": "cache" when data comes from Redis
+        const isCacheHit = data.from === "cache";
         
         // Update metrics
         updateMetrics(responseTime, isCacheHit, response.status);
