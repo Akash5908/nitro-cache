@@ -46,7 +46,7 @@ router.get("/:id", async (req, res) => {
     redisClient.SETEX(`Product:${id}`, 300, JSON.stringify(product));
 
     // Delay of 2 sec
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
 
     return res.status(200).json({
       success: true,
