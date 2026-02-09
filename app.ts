@@ -16,7 +16,7 @@ const app = express();
 const allowedOrigins = [
   // "http://localhost:5173",
   "https://nitro-cache.onrender.com",
-  "https://nitro-cache-frontend.vercel.app/",
+  "https://nitro-cache-frontend.vercel.app",
 ];
 
 app.use(
