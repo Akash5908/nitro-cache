@@ -1,0 +1,16 @@
+{
+  "name": "nitrocache-frontend",
+  "version": "1.0.0",
+  "description": "NitroCache Dashboard - High Performance Caching UI",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site - no build needed'",
+    "start": "npx serve . -l $PORT"
+  },
+  "keywords": ["redis", "caching", "dashboard", "performance"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}

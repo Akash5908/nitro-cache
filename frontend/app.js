@@ -1,5 +1,6 @@
 // API Configuration
-const API_BASE_URL = 'http://localhost:5001';
+// Use environment variable for production, fallback to localhost for development
+const API_BASE_URL = window.API_URL || 'http://localhost:5001';
 
 // State Management
 let requestHistory = [];

@@ -12,7 +12,30 @@ const limiter = rateLimit({
 });
 
 const app = express();
-app.use(cors());
+
+const allowedOrigins = [
+  // "http://localhost:5173",
+  "https://workflow-builder-k0hc.onrender.com",
+  "https://workflow-builder-frontend-hazel.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.warn(`Blocked CORS from: ${origin}`); // Log for debugging
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Add OPTIONS explicitly
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+
+app.set("trust proxy", 1);
 app.use(express.json());
 app.use(limiter);
 app.use("/api/products", ProductRouter);

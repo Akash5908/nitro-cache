@@ -240,6 +240,27 @@ _The dashboard shows real-time performance metrics and allows you to test the ca
 - **Fetch API** - Async HTTP requests
 - **Responsive Design** - Works on mobile and desktop
 
+### 🚀 Deploy Frontend on Vercel
+
+Deploy the dashboard globally in seconds:
+
+```bash
+cd frontend
+
+# Update the API URL in index.html
+# window.API_URL = 'https://your-backend-url.render.com';
+
+# Deploy with Vercel CLI
+vercel --prod
+```
+
+**Prerequisites:**
+- Backend API must be deployed first (Render, Railway, etc.)
+- Update CORS settings on backend to allow your Vercel domain
+- Install Vercel CLI: `npm i -g vercel`
+
+**Full deployment guide:** See [frontend/DEPLOY.md](frontend/DEPLOY.md)
+
 ## 🧪 Testing
 
 ### Run All Tests
