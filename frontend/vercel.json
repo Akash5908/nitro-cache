@@ -1,26 +1,9 @@
 {
-  "version": 2,
-  "name": "nitrocache-frontend",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "*"
-        },
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
         {
           "key": "Access-Control-Allow-Methods",
           "value": "GET, POST, PUT, DELETE, PATCH, OPTIONS"
@@ -31,5 +14,6 @@
         }
       ]
     }
-  ]
+  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
