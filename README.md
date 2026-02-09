@@ -196,6 +196,7 @@ NitroCache includes a modern, interactive dashboard to visualize and test the ca
 ### Running the Frontend
 
 1. **Navigate to the frontend directory**
+
 ```bash
 cd frontend
 ```
@@ -203,20 +204,24 @@ cd frontend
 2. **Start a local server** (choose one):
 
 Using Python (if installed):
+
 ```bash
 python3 -m http.server 8080
 ```
 
 Using Node.js (http-server):
+
 ```bash
 npx http-server -p 8080
 ```
 
 Using VS Code:
+
 - Install "Live Server" extension
 - Right-click on `index.html` → "Open with Live Server"
 
 3. **Open your browser**
+
 ```
 http://localhost:8080
 ```
@@ -225,7 +230,7 @@ http://localhost:8080
 
 ![Dashboard Preview](docs/dashboard-preview.png)
 
-*The dashboard shows real-time performance metrics and allows you to test the caching functionality with a single click.*
+_The dashboard shows real-time performance metrics and allows you to test the caching functionality with a single click._
 
 ### Frontend Tech Stack
 
@@ -476,7 +481,7 @@ This project is licensed under the ISC License.
 
 **Connect with me:**
 
-- LinkedIn: https://x.com/Akash6398_
-- Twitter: https://www.linkedin.com/in/akash-kumar-7810622a5/
+- Twitter: https://x.com/Akash6398_
+- LinkedIn: https://www.linkedin.com/in/akash-kumar-7810622a5/
 
 _Star ⭐ this repo if you found it helpful!_
